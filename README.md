@@ -27,7 +27,7 @@ Plugins that bundle an MCP server. Installing one auto-configures the server in 
 
 ```bash
 # Add the marketplace
-/plugin marketplace add maescalantehe/agent-skills
+/plugin marketplace add maescalantehe/skills
 
 # Install a specific plugin
 /plugin install terraform-conventions@skala-agent-skills
@@ -43,15 +43,15 @@ Plugins that bundle an MCP server. Installing one auto-configures the server in 
 
 ```bash
 # List all the available skills
-npx skills add maescalantehe/agent-skills
+npx skills add maescalantehe/skills
 
 # Install a specific skill
-npx skills add https://github.com/maescalantehe/agent-skills --skill terraform-conventions
-npx skills add https://github.com/maescalantehe/agent-skills --skill dockerfile-builder
-npx skills add https://github.com/maescalantehe/agent-skills --skill github-issue-tracker
-npx skills add https://github.com/maescalantehe/agent-skills --skill claude-md-auditor
-npx skills add https://github.com/maescalantehe/agent-skills --skill caveman
-npx skills add https://github.com/maescalantehe/agent-skills --skill context7
+npx skills add https://github.com/maescalantehe/skills --skill terraform-conventions
+npx skills add https://github.com/maescalantehe/skills --skill dockerfile-builder
+npx skills add https://github.com/maescalantehe/skills --skill github-issue-tracker
+npx skills add https://github.com/maescalantehe/skills --skill claude-md-auditor
+npx skills add https://github.com/maescalantehe/skills --skill caveman
+npx skills add https://github.com/maescalantehe/skills --skill context7
 ```
 
 ## License
