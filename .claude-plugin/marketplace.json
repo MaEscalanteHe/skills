@@ -33,7 +33,7 @@
     },
     {
       "name": "playwright",
-      "description": "Browser automation and end-to-end testing via the Playwright MCP server — navigate, click, fill forms, take snapshots and screenshots, and drive a real browser",
+      "description": "Browser automation and end-to-end testing via the Playwright MCP server: navigate, click, fill forms, take snapshots and screenshots, and drive a real browser",
       "source": "./plugins/playwright"
     },
     {
