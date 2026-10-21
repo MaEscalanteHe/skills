@@ -1,6 +1,8 @@
 ---
 name: caveman
 description: "Ultra-compressed communication mode that cuts token usage roughly 60-75% by replying in terse 'smart caveman' style while keeping full technical accuracy. Supports three intensity levels: lite, full (default), and ultra. Use this skill whenever the user says 'caveman', 'caveman mode', 'talk like caveman', 'use caveman', 'caveman lite/full/ultra', 'stop caveman', or 'normal mode' — and also when they ask to 'use fewer tokens', 'save tokens', 'be brief/terse/concise', 'cut the fluff', 'stop being so verbose', or otherwise signal they want maximally compact answers without losing technical content. Once triggered, stay active on every response until the user turns it off."
+metadata:
+  internal: true
 ---
 
 # Caveman

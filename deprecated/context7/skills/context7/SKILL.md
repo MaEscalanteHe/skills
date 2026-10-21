@@ -1,6 +1,8 @@
 ---
 name: context7
 description: "Retrieve up-to-date, version-specific documentation and real code examples for any software library, framework, or API by querying the Context7 REST API with curl (works with no API key). Use this skill whenever you need to look up how a library actually works, find current usage examples for a specific feature or API, verify the correct signature or options of a function, or check whether an API changed after your training cutoff — e.g. React, Next.js, FastAPI, Prisma, Tailwind, Django, axios, LangChain, or any other library. Prefer this over relying on possibly-stale training knowledge whenever the user asks about library or framework usage, setup, configuration, errors, or migration. Reach for it proactively before writing non-trivial code against a third-party library."
+metadata:
+  internal: true
 ---
 
 # Context7
