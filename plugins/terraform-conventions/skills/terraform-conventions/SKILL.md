@@ -1,6 +1,7 @@
 ---
 name: terraform-conventions
 description: "Write and review Terraform HCL following HashiCorp's official style conventions. TRIGGER when: writing, generating, reviewing, or refactoring Terraform code, HCL files, .tf files, infrastructure-as-code, or IaC configurations. Also trigger when discussing Terraform modules, variable design, resource naming, file organization, or tfvars. DO NOT TRIGGER when: working with Pulumi, CDK, CloudFormation, Ansible, or other non-Terraform IaC tools."
+license: MIT
 ---
 
 # Terraform Style Guide

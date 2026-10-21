@@ -1,6 +1,7 @@
 ---
 name: dockerfile-builder
 description: "Generate optimized, secure multi-stage Dockerfiles using modern BuildKit features. TRIGGER when: writing, creating, reviewing, or refactoring Dockerfiles, container images, Docker builds, docker-compose build configurations, CI/CD container pipelines, or .dockerignore files. Also trigger when discussing image size reduction, build caching, container security hardening, or multi-stage builds. DO NOT TRIGGER when: working with Kubernetes manifests, Helm charts, Docker Compose runtime configuration (not build), Terraform, or container orchestration that doesn't involve building images."
+license: MIT
 ---
 
 # Multi-Stage Dockerfile Guide
