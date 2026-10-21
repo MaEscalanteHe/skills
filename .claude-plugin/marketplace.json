@@ -7,9 +7,9 @@
   },
   "plugins": [
     {
-      "name": "claude-md-auditor",
+      "name": "agents-md-auditor",
       "description": "Audit and improve CLAUDE.md files with quality scoring, targeted updates, and modern Claude Code feature recommendations",
-      "source": "./plugins/claude-md-auditor"
+      "source": "./plugins/agents-md-auditor"
     },
     {
       "name": "dockerfile-builder",
