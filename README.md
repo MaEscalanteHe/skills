@@ -9,7 +9,6 @@ Personal Claude Code plugin marketplace and agent skills for infrastructure and 
 | --- | --- |
 | [**agents-md-auditor**](plugins/agents-md-auditor/) | Audit and improve CLAUDE.md files with quality scoring, targeted updates, and modern Claude Code feature recommendations |
 | [**dockerfile-builder**](plugins/dockerfile-builder/) | Generate optimized, secure multi-stage Dockerfiles with modern BuildKit features, language-specific patterns, and container security best practices |
-| [**github-issue-tracker**](plugins/github-issue-tracker/) | Track edge cases, TODOs, and deferred work as GitHub issues using the gh CLI, with duplicate detection, TODO file processing, and proactive suggestions |
 | [**terraform-conventions**](plugins/terraform-conventions/) | Write and review Terraform HCL following HashiCorp's official style conventions, with file organization, naming, security, and module best practices |
 <!-- skills:end -->
 

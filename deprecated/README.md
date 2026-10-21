@@ -6,3 +6,4 @@ Plugins I no longer use. They are left out of the marketplace and the top-level 
 | --------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | [**caveman**](caveman/)     | Replaced by ponytail                                       | [juliusbrussee/caveman](https://github.com/juliusbrussee/caveman)                                                             |
 | [**context7**](context7/)   | Duplicates the official Context7 MCP plugin                | [intellectronica/agent-skills: context7](https://github.com/intellectronica/agent-skills/blob/main/skills/context7/SKILL.md) |
+| [**github-issue-tracker**](github-issue-tracker/) | Overlaps with `to-issues` and `triage` from mattpocock/skills | Original |

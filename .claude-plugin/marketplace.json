@@ -17,11 +17,6 @@
       "source": "./plugins/dockerfile-builder"
     },
     {
-      "name": "github-issue-tracker",
-      "description": "Track edge cases, TODOs, and deferred work as GitHub issues using the gh CLI, with duplicate detection, TODO file processing, and proactive suggestions",
-      "source": "./plugins/github-issue-tracker"
-    },
-    {
       "name": "playwright",
       "description": "Browser automation and end-to-end testing via the Playwright MCP server: navigate, click, fill forms, take snapshots and screenshots, and drive a real browser",
       "source": "./plugins/playwright"

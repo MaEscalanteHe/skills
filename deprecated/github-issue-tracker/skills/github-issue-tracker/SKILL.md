@@ -1,6 +1,8 @@
 ---
 name: github-issue-tracker
 description: "Track edge cases, TODOs, and deferred work as GitHub issues using the gh CLI. Use this skill proactively whenever a development task surfaces an edge case, a bug to fix later, a refactor opportunity, or any work that should be handled in a separate session. Also use when the user asks to create issues from a TODO file (TODO.md, TODO.txt, TODO) found in the repository. Triggers include: discovering unexpected behavior during implementation, noting 'we should also handle X', finding tech debt, or when the user says 'create an issue', 'track this', 'log this for later', 'this needs its own PR', or similar phrases. Even if the user doesn't explicitly ask, suggest creating an issue when you notice work that clearly belongs in a separate session."
+metadata:
+  internal: true
 ---
 
 # GitHub Issue Tracker
