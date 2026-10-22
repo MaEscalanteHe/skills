@@ -1,0 +1,73 @@
+name: Sync upstream plugins
+
+# For each plugin with a .upstream.json, opens a PR when its upstream repo publishes a newer release.
+# A PR rather than a push, so upstream changes are reviewed before they reach claude.ai.
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    outputs:
+      plugins: ${{ steps.list.outputs.plugins }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - id: list
+        run: echo "plugins=$(ls plugins/*/.upstream.json | cut -d/ -f2 | jq -Rcs 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
+
+  sync:
+    needs: list
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin: ${{ fromJSON(needs.list.outputs.plugins) }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PLUGIN: ${{ matrix.plugin }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Copy the latest release
+        id: sync
+        run: |
+          tag="$(scripts/sync-upstream.sh "$PLUGIN")"
+          branch="sync/$PLUGIN-$tag"
+          if [[ -z "$tag" ]]; then
+            echo "$PLUGIN is up to date"
+          elif git ls-remote --exit-code origin "refs/heads/$branch" >/dev/null; then
+            echo "$branch already exists"
+          else
+            echo "tag=$tag" >> "$GITHUB_OUTPUT"
+            echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate
+        if: steps.sync.outputs.tag
+        run: |
+          scripts/build-marketplace.sh
+          npm install --global @anthropic-ai/claude-code@2.1.306
+          claude plugin validate .
+
+      - name: Open a pull request
+        if: steps.sync.outputs.tag
+        env:
+          TAG: ${{ steps.sync.outputs.tag }}
+          BRANCH: ${{ steps.sync.outputs.branch }}
+        run: |
+          upstream="$(jq -r .repo "plugins/$PLUGIN/.upstream.json")"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git add "plugins/$PLUGIN" README.md .claude-plugin/marketplace.json
+          git commit -m "chore: update $PLUGIN to $TAG"
+          git push origin "$BRANCH"
+          gh pr create --title "chore: update $PLUGIN to $TAG" --body "Release notes: https://github.com/$upstream/releases/tag/$TAG
+
+          Review the diff before merging: once synced to claude.ai it becomes instructions and code the agent runs."

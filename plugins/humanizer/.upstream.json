@@ -1,0 +1,7 @@
+{
+  "repo": "blader/humanizer",
+  "paths": {
+    "SKILL.md": "skills/humanizer/SKILL.md",
+    "LICENSE": "LICENSE"
+  }
+}
