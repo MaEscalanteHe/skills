@@ -17,6 +17,11 @@
       "source": "./plugins/dockerfile-builder"
     },
     {
+      "name": "humanizer",
+      "description": "Rewrite AI-sounding text so it reads like the writer without changing what it says",
+      "source": "./plugins/humanizer"
+    },
+    {
       "name": "playwright",
       "description": "Browser automation and end-to-end testing via the Playwright MCP server: navigate, click, fill forms, take snapshots and screenshots, and drive a real browser",
       "source": "./plugins/playwright"
