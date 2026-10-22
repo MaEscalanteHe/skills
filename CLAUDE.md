@@ -13,6 +13,14 @@ Claude Code plugin marketplace. Published plugins live in `plugins/<name>/`, ret
 3. If the plugin adapts another project, add a row to the README References table (maintained by hand).
 4. Run `scripts/build-marketplace.sh`, then `claude plugin validate .`.
 
+## Vendored plugins
+
+A plugin with a `.upstream.json` is an unmodified copy of another repo's release, kept here so it can be installed from claude.ai. The file names the upstream `repo` and maps upstream `paths` to paths inside the plugin.
+
+- Its files change only through `scripts/sync-upstream.sh <name>`. `.github/workflows/sync-upstream.yml` runs it weekly and opens a PR per new release, which overwrites any hand edit. To customize a vendored plugin, delete its `.upstream.json` so it becomes an adaptation.
+- Its `SKILL.md` frontmatter stays as upstream wrote it, exempt from step 2 above.
+- To add one, the upstream must publish GitHub Releases tagged `vX.Y.Z`. Write `plugins/<name>/.upstream.json`. If `paths` leaves out the upstream `.claude-plugin/plugin.json`, write one per step 1. Run `scripts/sync-upstream.sh <name>` for the first import, add a References row marked "(unmodified copy)", then do step 4.
+
 ## Deprecating a plugin
 
 1. `git mv plugins/<name> deprecated/<name>`.
