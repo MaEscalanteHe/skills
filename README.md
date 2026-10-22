@@ -10,6 +10,7 @@ Personal Claude Code plugin marketplace and agent skills for infrastructure and 
 | [**agents-md-auditor**](plugins/agents-md-auditor/) | Audit and improve CLAUDE.md files with quality scoring, targeted updates, and modern Claude Code feature recommendations |
 | [**dockerfile-builder**](plugins/dockerfile-builder/) | Generate optimized, secure multi-stage Dockerfiles with modern BuildKit features, language-specific patterns, and container security best practices |
 | [**humanizer**](plugins/humanizer/) | Rewrite AI-sounding text so it reads like the writer without changing what it says |
+| [**ponytail**](plugins/ponytail/) | Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions. |
 | [**terraform-conventions**](plugins/terraform-conventions/) | Write and review Terraform HCL following HashiCorp's official style conventions, with file organization, naming, security, and module best practices |
 <!-- skills:end -->
 
@@ -56,6 +57,7 @@ Some plugins are adaptations of existing skills, tailored to my own use case, or
 | **terraform-conventions** | [hashicorp/agent-skills](https://github.com/hashicorp/agent-skills)                                                                                                  |
 | **agents-md-auditor**     | [anthropics/claude-plugins-official: claude-md-improver](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/claude-md-management/skills/claude-md-improver/SKILL.md) |
 | **humanizer**             | [blader/humanizer](https://github.com/blader/humanizer) (unmodified copy)                                                                                            |
+| **ponytail**              | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (unmodified copy)                                                                              |
 
 ## Development
 

@@ -27,6 +27,11 @@
       "source": "./plugins/playwright"
     },
     {
+      "name": "ponytail",
+      "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
+      "source": "./plugins/ponytail"
+    },
+    {
       "name": "terraform-conventions",
       "description": "Write and review Terraform HCL following HashiCorp's official style conventions, with file organization, naming, security, and module best practices",
       "source": "./plugins/terraform-conventions"

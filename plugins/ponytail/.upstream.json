@@ -1,0 +1,9 @@
+{
+  "repo": "DietrichGebert/ponytail",
+  "paths": {
+    ".claude-plugin/plugin.json": ".claude-plugin/plugin.json",
+    "skills": "skills",
+    "hooks": "hooks",
+    "LICENSE": "LICENSE"
+  }
+}
