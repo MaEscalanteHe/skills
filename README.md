@@ -36,7 +36,7 @@ Plugins that bundle an MCP server. Installing one auto-configures the server in 
 /plugin marketplace add maescalantehe/skills
 
 # Install a plugin from the tables above
-/plugin install <plugin>@skala-agent-skills
+/plugin install <plugin>@maescalantehe
 ```
 
 ### Skills.sh
