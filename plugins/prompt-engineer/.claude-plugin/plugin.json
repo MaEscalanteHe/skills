@@ -1,0 +1,8 @@
+{
+  "name": "prompt-engineer",
+  "description": "Create, improve and optimize prompts and system prompts for Claude, with a diagnosis of what works and the reasoning behind each change",
+  "author": {
+    "name": "Manuel Escalante",
+    "email": "maescalantehe@gmail.com"
+  }
+}
