@@ -22,6 +22,15 @@
       "source": "./plugins/humanizer"
     },
     {
+      "name": "mattpocock-skills",
+      "description": "Matt Pocock's agent skills for real engineering: grilling, spec/ticket flows, TDD, code review, domain modelling and more",
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills",
+        "sha": "49dd158d1076134a641b33efb035946536778336"
+      }
+    },
+    {
       "name": "playwright",
       "description": "Browser automation and end-to-end testing via the Playwright MCP server: navigate, click, fill forms, take snapshots and screenshots, and drive a real browser",
       "source": "./plugins/playwright"
