@@ -3,10 +3,9 @@ set -euo pipefail
 
 # Regenerates the plugin list in .claude-plugin/marketplace.json and the
 # Skills/MCPs tables in README.md from plugins/*/ and vendored/*/
-# .claude-plugin/plugin.json, so deprecated/ is left out.
-# Referenced plugins (entries whose source is another GitHub repo) are written
-# by hand in marketplace.json and kept. Plugins that ship a .mcp.json go in the
-# MCPs table. Requires jq.
+# .claude-plugin/plugin.json, so deprecated/ is left out, plus the entries in
+# referenced/*.json, whose source is another GitHub repo. Plugins that ship a
+# .mcp.json go in the MCPs table. Requires jq.
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 MARKETPLACE="$REPO/.claude-plugin/marketplace.json"
@@ -15,14 +14,17 @@ README="$REPO/README.md"
 cd "$REPO"
 
 plugins="$(
-  for manifest in plugins/*/.claude-plugin/plugin.json vendored/*/.claude-plugin/plugin.json; do
-    jq --arg source "./${manifest%/.claude-plugin/plugin.json}" \
-      '{name, description, source: $source}' "$manifest"
-  done | jq -s .
+  {
+    for manifest in plugins/*/.claude-plugin/plugin.json vendored/*/.claude-plugin/plugin.json; do
+      jq --arg source "./${manifest%/.claude-plugin/plugin.json}" \
+        '{name, description, source: $source}' "$manifest"
+    done
+    cat referenced/*.json
+  } | jq -s .
 )"
 
 jq --argjson plugins "$plugins" \
-  '.plugins = ($plugins + [.plugins[] | select(.source | type == "object")] | sort_by(.name))' \
+  '.plugins = ($plugins | sort_by(.name))' \
   "$MARKETPLACE" > "$MARKETPLACE.tmp"
 mv "$MARKETPLACE.tmp" "$MARKETPLACE"
 echo "wrote $(jq '.plugins | length' "$MARKETPLACE") plugins to $MARKETPLACE"

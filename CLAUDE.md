@@ -1,10 +1,10 @@
 # Skills
 
-Claude Code plugin marketplace. Plugins written or adapted here live in `plugins/<name>/`, unmodified copies of other repos in `vendored/<name>/`, and retired ones in `deprecated/<name>/`.
+Claude Code plugin marketplace. Plugins written or adapted here live in `plugins/<name>/`, unmodified copies of other repos in `vendored/<name>/`, references to other repos in `referenced/<name>.json`, and retired ones in `deprecated/<name>/`.
 
 ## Generated files
 
-`.claude-plugin/marketplace.json` and the README tables between the `<!-- skills:start/end -->` and `<!-- mcps:start/end -->` markers are generated from the `.claude-plugin/plugin.json` of each plugin in `plugins/` and `vendored/`, plus the referenced plugins below. Change a description or name in the plugin's `plugin.json`, then run `scripts/build-marketplace.sh`. Plugins that ship a `.mcp.json` land in the MCPs table.
+`.claude-plugin/marketplace.json` and the README tables between the `<!-- skills:start/end -->` and `<!-- mcps:start/end -->` markers are generated from the `.claude-plugin/plugin.json` of each plugin in `plugins/` and `vendored/`, plus the entries in `referenced/`. Never edit them by hand. Change a description or name in the plugin's `plugin.json`, then run `scripts/build-marketplace.sh`. Plugins that ship a `.mcp.json` land in the MCPs table.
 
 ## Adding a plugin
 
@@ -23,10 +23,10 @@ A marketplace entry can point at another repo instead of a copy (`"source": {"so
 
 ## Referenced plugins
 
-A marketplace entry whose `source` is an object is written by hand in `.claude-plugin/marketplace.json`, and `scripts/build-marketplace.sh` keeps it. Its `sha` is the commit of the upstream's latest `vX.Y.Z` release.
+`referenced/<name>.json` holds the plugin's marketplace entry, which `scripts/build-marketplace.sh` copies into `.claude-plugin/marketplace.json`. Its `sha` is the commit of the upstream's latest `vX.Y.Z` release.
 
 - Its `sha` changes only through `scripts/sync-upstream.sh <name>`, which `.github/workflows/sync-upstream.yml` runs weekly, opening a PR per new release.
-- To add one, the upstream must publish GitHub Releases tagged `vX.Y.Z`. Write its entry with `name`, `description` and a `github` source without `sha`, run `scripts/sync-upstream.sh <name>` to pin it, add a References row marked "(referenced)", then do step 4.
+- To add one, the upstream must publish GitHub Releases tagged `vX.Y.Z`. Write `referenced/<name>.json` with `name`, `description` and a `github` source without `sha`, run `scripts/sync-upstream.sh <name>` to pin it, add a References row marked "(referenced)", then do step 4.
 
 ## Vendored plugins
 
@@ -38,7 +38,7 @@ A plugin in `vendored/<name>/` is an unmodified copy of another repo's release, 
 
 ## Deprecating a plugin
 
-1. `git mv plugins/<name> deprecated/<name>` (or from `vendored/<name>`).
+1. `git mv plugins/<name> deprecated/<name>` (or from `vendored/<name>`). A referenced plugin has nothing to keep: delete its `referenced/<name>.json` and skip to step 3.
 2. Add `metadata:` / `internal: true` to the frontmatter of each of its `SKILL.md` files. skills.sh scans the whole repo, and this flag hides them.
 3. Move its README References row to `deprecated/README.md`, adding the reason.
 4. Run `scripts/build-marketplace.sh`.

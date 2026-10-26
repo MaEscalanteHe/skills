@@ -66,7 +66,7 @@ Some plugins are adaptations of existing skills, tailored to my own use case, bu
 
 ## Development
 
-`.claude-plugin/marketplace.json` and the Skills and MCPs tables above are generated from each plugin's `plugin.json`, so edit descriptions there. After adding, removing or editing a plugin under `plugins/` or `vendored/` (unmodified copies of other repos), run `scripts/build-marketplace.sh` (requires `jq`). Referenced plugins, which point at another repo instead of a folder here, are entries written by hand in `marketplace.json`, and the script keeps them. Retired plugins live in [`deprecated/`](deprecated/).
+`.claude-plugin/marketplace.json` and the Skills and MCPs tables above are generated from each plugin's `plugin.json`, so edit descriptions there. After adding, removing or editing a plugin under `plugins/` or `vendored/` (unmodified copies of other repos), run `scripts/build-marketplace.sh` (requires `jq`). Referenced plugins point at another repo instead of a folder here, and their marketplace entries live in `referenced/`. Retired plugins live in [`deprecated/`](deprecated/).
 
 ## License
 

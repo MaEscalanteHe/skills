@@ -1,7 +1,7 @@
 name: Sync upstream plugins
 
-# For each vendored plugin (with a .upstream.json) or referenced plugin (a marketplace entry whose
-# source is another GitHub repo), opens a PR when its upstream repo publishes a newer release.
+# For each vendored plugin (vendored/<name>/) or referenced plugin (referenced/<name>.json),
+# opens a PR when its upstream repo publishes a newer release.
 # A PR rather than a push, so upstream changes are reviewed before they reach claude.ai.
 on:
   schedule:
@@ -23,7 +23,7 @@ jobs:
         id: list
         run: |
           vendored="$(ls vendored/*/.upstream.json | cut -d/ -f2 | jq -Rcs 'split("\n")[:-1]')"
-          referenced="$(jq -c '[.plugins[] | select(.source | type == "object") | .name]' .claude-plugin/marketplace.json)"
+          referenced="$(ls referenced/*.json | xargs -n1 basename -s .json | jq -Rcs 'split("\n")[:-1]')"
           echo "plugins=$(jq -cn --argjson v "$vendored" --argjson r "$referenced" '$v + $r')" | tee -a "$GITHUB_OUTPUT"
 
   sync:
@@ -66,12 +66,11 @@ jobs:
           TAG: ${{ steps.sync.outputs.tag }}
           BRANCH: ${{ steps.sync.outputs.branch }}
         run: |
-          upstream="$(jq -r .repo "vendored/$PLUGIN/.upstream.json" 2>/dev/null ||
-            jq -r --arg n "$PLUGIN" '.plugins[] | select(.name == $n) | .source.repo' .claude-plugin/marketplace.json)"
+          upstream="$(jq -r .repo "vendored/$PLUGIN/.upstream.json" 2>/dev/null || jq -r .source.repo "referenced/$PLUGIN.json")"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "$BRANCH"
-          git add vendored README.md .claude-plugin/marketplace.json
+          git add vendored referenced README.md .claude-plugin/marketplace.json
           git commit -m "chore: update $PLUGIN to $TAG"
           git push origin "$BRANCH"
           gh pr create --title "chore: update $PLUGIN to $TAG" --body "Release notes: https://github.com/$upstream/releases/tag/$TAG
