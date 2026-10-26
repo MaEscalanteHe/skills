@@ -4,7 +4,9 @@ set -euo pipefail
 # Regenerates the plugin list in .claude-plugin/marketplace.json and the
 # Skills/MCPs tables in README.md from plugins/*/.claude-plugin/plugin.json,
 # so only plugins under plugins/ are published (deprecated/ is left out).
-# Plugins that ship a .mcp.json go in the MCPs table. Requires jq.
+# Referenced plugins (entries whose source is another GitHub repo) are written
+# by hand in marketplace.json and kept. Plugins that ship a .mcp.json go in the
+# MCPs table. Requires jq.
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 MARKETPLACE="$REPO/.claude-plugin/marketplace.json"
@@ -19,7 +21,9 @@ plugins="$(
   done | jq -s .
 )"
 
-jq --argjson plugins "$plugins" '.plugins = $plugins' "$MARKETPLACE" > "$MARKETPLACE.tmp"
+jq --argjson plugins "$plugins" \
+  '.plugins = ($plugins + [.plugins[] | select(.source | type == "object")] | sort_by(.name))' \
+  "$MARKETPLACE" > "$MARKETPLACE.tmp"
 mv "$MARKETPLACE.tmp" "$MARKETPLACE"
 echo "wrote $(jq '.plugins | length' "$MARKETPLACE") plugins to $MARKETPLACE"
 
@@ -27,12 +31,15 @@ echo "wrote $(jq '.plugins | length' "$MARKETPLACE") plugins to $MARKETPLACE"
 table() {
   local header="$1" mcp="$2"
   printf '| %s | Description |\n| --- | --- |\n' "$header"
-  for manifest in plugins/*/.claude-plugin/plugin.json; do
-    local dir="${manifest%/.claude-plugin/plugin.json}"
-    if [[ -e "$dir/.mcp.json" ]]; then has_mcp=true; else has_mcp=false; fi
-    [[ "$has_mcp" == "$mcp" ]] || continue
-    jq -r --arg dir "$dir" '"| [**\(.name)**](\($dir)/) | \(.description) |"' "$manifest"
-  done
+  jq -r '.plugins[] | [.name, .description, (.source |
+      if type == "string" then ltrimstr("./") + "/"
+      elif .source == "github" then "https://github.com/\(.repo)"
+      else error("unsupported source: \(.source)") end)] | @tsv' "$MARKETPLACE" |
+    while IFS=$'\t' read -r name description link; do
+      if [[ -e "$link/.mcp.json" ]]; then has_mcp=true; else has_mcp=false; fi
+      [[ "$has_mcp" == "$mcp" ]] || continue
+      echo "| [**$name**]($link) | $description |"
+    done
 }
 
 # Replaces the lines between <!-- $1:start --> and <!-- $1:end --> in README.md.
