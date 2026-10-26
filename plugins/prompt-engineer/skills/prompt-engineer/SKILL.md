@@ -16,7 +16,7 @@ Keep the prompt proportional to the task:
 
 - **Simple** (translation, reformatting, single-step task): clear instructions alone.
 - **Moderate** (classification, analysis with criteria): add role, output format and constraints.
-- **Complex** (multi-step system, reasoning, design): use the full anatomy, with examples, reasoning and XML structure.
+- **Complex** (multi-step system, reasoning, design): use the full anatomy, with examples and XML structure.
 
 Before writing a moderate or complex prompt, read [references/anatomy.md](references/anatomy.md). When diagnosing a pasted prompt, or when the task needs reasoning, long documents or prompt chaining, read [references/techniques.md](references/techniques.md). When the prompt drives an agent that calls tools, read [references/agentic.md](references/agentic.md).
 
@@ -28,7 +28,7 @@ Diagnose what works, what is missing and what is unnecessary, then write the imp
 
 ### 2b. Create a new prompt
 
-Ask at most 3 questions, covering only what the request leaves open:
+Pick at most 3 of these questions, covering only what the request leaves open:
 
 - What specific task should Claude perform?
 - What's the usage context and expected output format?

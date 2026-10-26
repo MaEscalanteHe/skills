@@ -2,7 +2,7 @@
 
 Six components. Use only the ones the task's complexity calls for.
 
-## 1. Role / Identity
+## 1. Role / identity
 
 Set the role in the system prompt. Even one sentence focuses behavior and tone; what matters is the specialization.
 
@@ -15,7 +15,7 @@ with 10 years of experience in OWASP Top 10.
 
 A specific role ("senior security reviewer") outperforms "you are a helpful assistant", which adds nothing because Claude already is one.
 
-## 2. Context / Background
+## 2. Context / background
 
 Explain the **why** behind the task. Claude generalizes from the explanation and gives more targeted responses.
 
@@ -26,7 +26,7 @@ endpoint before production. The team has intermediate security experience.
 </context>
 ```
 
-## 3. Clear Instructions
+## 3. Clear instructions
 
 Treat Claude as a brilliant new employee who lacks your context: state exactly what to do and what to return.
 
@@ -37,7 +37,7 @@ Treat Claude as a brilliant new employee who lacks your context: state exactly w
 - Ask explicitly for anything beyond the minimum ("Include as many relevant features as possible. Go beyond the basics."); Claude follows instructions precisely and does not infer extra scope.
 - Ask for specific details instead of "be as detailed as possible", which produces bloated responses with no direction.
 
-## 4. Examples (Few-shot)
+## 4. Examples (few-shot)
 
 3-5 examples, each one:
 
@@ -64,7 +64,7 @@ Treat Claude as a brilliant new employee who lacks your context: state exactly w
 - When one behavior keeps going wrong, a single complete example (request, correct response, and a `<rationale>` saying why it is correct) can fix it.
 - For reasoning tasks, present each example as problem, method and answer: examples shape how Claude approaches similar problems in its thinking.
 
-## 5. Output Format
+## 5. Output format
 
 Specify exactly what structure you expect. Without it, the format drifts between calls.
 
@@ -93,7 +93,7 @@ Respond in JSON with this structure:
 - With structured outputs the response holds only JSON, so the model can work a problem out only in its thinking. For tasks that need a few steps of working out (totals, rules, rankings), end the system prompt with "Think the problem through before you answer."
 - Prefilling the assistant turn is not supported from Claude 4.6 on. To skip preambles, ask for it directly ("Respond directly without preamble") or have the answer written inside XML tags.
 
-## 6. Constraints / Guardrails
+## 6. Constraints / guardrails
 
 Define explicit boundaries, each stated as the behavior you want and, when it is not obvious, why: a bare prohibition gives Claude nothing to do instead.
 
