@@ -32,6 +32,11 @@
       "source": "./plugins/ponytail"
     },
     {
+      "name": "split-bill",
+      "description": "Split a restaurant bill between several people from a photo of the receipt, matching every line to who ordered it and reconciling against the printed total",
+      "source": "./plugins/split-bill"
+    },
+    {
       "name": "terraform-conventions",
       "description": "Write and review Terraform HCL following HashiCorp's official style conventions, with file organization, naming, security, and module best practices",
       "source": "./plugins/terraform-conventions"

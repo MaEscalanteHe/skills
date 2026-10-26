@@ -11,6 +11,7 @@ Personal Claude Code plugin marketplace and agent skills for infrastructure and 
 | [**dockerfile-builder**](plugins/dockerfile-builder/) | Generate optimized, secure multi-stage Dockerfiles with modern BuildKit features, language-specific patterns, and container security best practices |
 | [**humanizer**](plugins/humanizer/) | Rewrite AI-sounding text so it reads like the writer without changing what it says |
 | [**ponytail**](plugins/ponytail/) | Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions. |
+| [**split-bill**](plugins/split-bill/) | Split a restaurant bill between several people from a photo of the receipt, matching every line to who ordered it and reconciling against the printed total |
 | [**terraform-conventions**](plugins/terraform-conventions/) | Write and review Terraform HCL following HashiCorp's official style conventions, with file organization, naming, security, and module best practices |
 <!-- skills:end -->
 

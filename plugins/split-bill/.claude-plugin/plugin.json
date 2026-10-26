@@ -1,0 +1,8 @@
+{
+  "name": "split-bill",
+  "description": "Split a restaurant bill between several people from a photo of the receipt, matching every line to who ordered it and reconciling against the printed total",
+  "author": {
+    "name": "Manuel Escalante",
+    "email": "maescalantehe@gmail.com"
+  }
+}
