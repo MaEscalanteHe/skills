@@ -18,8 +18,9 @@ jobs:
       plugins: ${{ steps.list.outputs.plugins }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - id: list
-        run: echo "plugins=$(ls plugins/*/.upstream.json | cut -d/ -f2 | jq -Rcs 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
+      - name: List vendored plugins
+        id: list
+        run: echo "plugins=$(ls plugins/*/.upstream.json | cut -d/ -f2 | jq -Rcs 'split("\n")[:-1]')" | tee -a "$GITHUB_OUTPUT"
 
   sync:
     needs: list
