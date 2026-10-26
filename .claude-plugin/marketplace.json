@@ -19,7 +19,7 @@
     {
       "name": "humanizer",
       "description": "Rewrite AI-sounding text so it reads like the writer without changing what it says",
-      "source": "./plugins/humanizer"
+      "source": "./vendored/humanizer"
     },
     {
       "name": "mattpocock-skills",
@@ -38,7 +38,7 @@
     {
       "name": "ponytail",
       "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
-      "source": "./plugins/ponytail"
+      "source": "./vendored/ponytail"
     },
     {
       "name": "prompt-engineer",

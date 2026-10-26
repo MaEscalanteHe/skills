@@ -9,9 +9,9 @@ Personal Claude Code plugin marketplace and agent skills for infrastructure and 
 | --- | --- |
 | [**agents-md-auditor**](plugins/agents-md-auditor/) | Audit and improve CLAUDE.md files with quality scoring, targeted updates, and modern Claude Code feature recommendations |
 | [**dockerfile-builder**](plugins/dockerfile-builder/) | Generate optimized, secure multi-stage Dockerfiles with modern BuildKit features, language-specific patterns, and container security best practices |
-| [**humanizer**](plugins/humanizer/) | Rewrite AI-sounding text so it reads like the writer without changing what it says |
+| [**humanizer**](vendored/humanizer/) | Rewrite AI-sounding text so it reads like the writer without changing what it says |
 | [**mattpocock-skills**](https://github.com/mattpocock/skills) | Matt Pocock's agent skills for real engineering: grilling, spec/ticket flows, TDD, code review, domain modelling and more |
-| [**ponytail**](plugins/ponytail/) | Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions. |
+| [**ponytail**](vendored/ponytail/) | Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions. |
 | [**prompt-engineer**](plugins/prompt-engineer/) | Create, improve and optimize prompts and system prompts for Claude, with a diagnosis of what works and the reasoning behind each change |
 | [**split-bill**](plugins/split-bill/) | Split a restaurant bill between several people from a photo of the receipt, matching every line to who ordered it and reconciling against the printed total |
 | [**terraform-conventions**](plugins/terraform-conventions/) | Write and review Terraform HCL following HashiCorp's official style conventions, with file organization, naming, security, and module best practices |
@@ -66,7 +66,7 @@ Some plugins are adaptations of existing skills, tailored to my own use case, bu
 
 ## Development
 
-`.claude-plugin/marketplace.json` and the Skills and MCPs tables above are generated from each plugin's `plugin.json`, so edit descriptions there. After adding, removing or editing a plugin under `plugins/`, run `scripts/build-marketplace.sh` (requires `jq`). Referenced plugins, which point at another repo instead of `plugins/`, are entries written by hand in `marketplace.json`, and the script keeps them. Retired plugins live in [`deprecated/`](deprecated/).
+`.claude-plugin/marketplace.json` and the Skills and MCPs tables above are generated from each plugin's `plugin.json`, so edit descriptions there. After adding, removing or editing a plugin under `plugins/` or `vendored/` (unmodified copies of other repos), run `scripts/build-marketplace.sh` (requires `jq`). Referenced plugins, which point at another repo instead of a folder here, are entries written by hand in `marketplace.json`, and the script keeps them. Retired plugins live in [`deprecated/`](deprecated/).
 
 ## License
 

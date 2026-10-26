@@ -1,10 +1,10 @@
 # Skills
 
-Claude Code plugin marketplace. Published plugins live in `plugins/<name>/`, retired ones in `deprecated/<name>/`.
+Claude Code plugin marketplace. Plugins written or adapted here live in `plugins/<name>/`, unmodified copies of other repos in `vendored/<name>/`, and retired ones in `deprecated/<name>/`.
 
 ## Generated files
 
-`.claude-plugin/marketplace.json` and the README tables between the `<!-- skills:start/end -->` and `<!-- mcps:start/end -->` markers are generated from `plugins/*/.claude-plugin/plugin.json`, plus the referenced plugins below. Change a description or name in the plugin's `plugin.json`, then run `scripts/build-marketplace.sh`. Plugins that ship a `.mcp.json` land in the MCPs table.
+`.claude-plugin/marketplace.json` and the README tables between the `<!-- skills:start/end -->` and `<!-- mcps:start/end -->` markers are generated from the `.claude-plugin/plugin.json` of each plugin in `plugins/` and `vendored/`, plus the referenced plugins below. Change a description or name in the plugin's `plugin.json`, then run `scripts/build-marketplace.sh`. Plugins that ship a `.mcp.json` land in the MCPs table.
 
 ## Adding a plugin
 
@@ -30,15 +30,15 @@ A marketplace entry whose `source` is an object is written by hand in `.claude-p
 
 ## Vendored plugins
 
-A plugin with a `.upstream.json` is an unmodified copy of another repo's release, kept here so it can be installed from claude.ai. The file names the upstream `repo` and maps upstream `paths` to paths inside the plugin.
+A plugin in `vendored/<name>/` is an unmodified copy of another repo's release, kept here so it can be installed from claude.ai. The file names the upstream `repo` and maps upstream `paths` to paths inside the plugin.
 
 - Its files change only through `scripts/sync-upstream.sh <name>`. `.github/workflows/sync-upstream.yml` runs it weekly and opens a PR per new release, which overwrites any hand edit. To customize a vendored plugin, delete its `.upstream.json` so it becomes an adaptation.
 - Its `SKILL.md` frontmatter stays as upstream wrote it, exempt from step 2 above.
-- To add one, the upstream must publish GitHub Releases tagged `vX.Y.Z`. Write `plugins/<name>/.upstream.json`. If `paths` leaves out the upstream `.claude-plugin/plugin.json`, write one per step 1. Run `scripts/sync-upstream.sh <name>` for the first import, add a References row marked "(unmodified copy)", then do step 4.
+- To add one, the upstream must publish GitHub Releases tagged `vX.Y.Z`. Write `vendored/<name>/.upstream.json`. If `paths` leaves out the upstream `.claude-plugin/plugin.json`, write one per step 1. Run `scripts/sync-upstream.sh <name>` for the first import, add a References row marked "(unmodified copy)", then do step 4.
 
 ## Deprecating a plugin
 
-1. `git mv plugins/<name> deprecated/<name>`.
+1. `git mv plugins/<name> deprecated/<name>` (or from `vendored/<name>`).
 2. Add `metadata:` / `internal: true` to the frontmatter of each of its `SKILL.md` files. skills.sh scans the whole repo, and this flag hides them.
 3. Move its README References row to `deprecated/README.md`, adding the reason.
 4. Run `scripts/build-marketplace.sh`.

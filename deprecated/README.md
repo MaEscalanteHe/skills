@@ -1,6 +1,6 @@
 # Deprecated
 
-Plugins I no longer use. They are left out of the marketplace and the top-level README, and their skills are marked `metadata.internal: true` so skills.sh hides them. To restore one, move it back to `plugins/` and run `scripts/build-marketplace.sh`.
+Plugins I no longer use. They are left out of the marketplace and the top-level README, and their skills are marked `metadata.internal: true` so skills.sh hides them. To restore one, move it back to `plugins/` (or `vendored/` for an unmodified copy) and run `scripts/build-marketplace.sh`.
 
 | Plugin                      | Reason                                                     | Based on                                                                                                                      |
 | --------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |

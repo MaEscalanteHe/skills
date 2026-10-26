@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Copies the latest upstream release of a vendored plugin into plugins/<name>/,
-# using the repo and path map in plugins/<name>/.upstream.json, and sets the
+# Copies the latest upstream release of a vendored plugin into vendored/<name>/,
+# using the repo and path map in vendored/<name>/.upstream.json, and sets the
 # plugin's version to the release. For a referenced plugin (an entry in
 # marketplace.json whose source is another GitHub repo), points its sha at the
 # release commit instead. Prints the release tag, or nothing when the plugin is
@@ -12,7 +12,7 @@ set -euo pipefail
 name="$1"
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 MARKETPLACE="$REPO/.claude-plugin/marketplace.json"
-dir="$REPO/plugins/$name"
+dir="$REPO/vendored/$name"
 if [[ -e "$dir/.upstream.json" ]]; then
   upstream="$(jq -r .repo "$dir/.upstream.json")"
 else

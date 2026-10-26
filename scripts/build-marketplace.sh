@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # Regenerates the plugin list in .claude-plugin/marketplace.json and the
-# Skills/MCPs tables in README.md from plugins/*/.claude-plugin/plugin.json,
-# so only plugins under plugins/ are published (deprecated/ is left out).
+# Skills/MCPs tables in README.md from plugins/*/ and vendored/*/
+# .claude-plugin/plugin.json, so deprecated/ is left out.
 # Referenced plugins (entries whose source is another GitHub repo) are written
 # by hand in marketplace.json and kept. Plugins that ship a .mcp.json go in the
 # MCPs table. Requires jq.
@@ -15,7 +15,7 @@ README="$REPO/README.md"
 cd "$REPO"
 
 plugins="$(
-  for manifest in plugins/*/.claude-plugin/plugin.json; do
+  for manifest in plugins/*/.claude-plugin/plugin.json vendored/*/.claude-plugin/plugin.json; do
     jq --arg source "./${manifest%/.claude-plugin/plugin.json}" \
       '{name, description, source: $source}' "$manifest"
   done | jq -s .
