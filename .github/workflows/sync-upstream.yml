@@ -1,6 +1,7 @@
 name: Sync upstream plugins
 
-# For each plugin with a .upstream.json, opens a PR when its upstream repo publishes a newer release.
+# For each vendored plugin (with a .upstream.json) or referenced plugin (a marketplace entry whose
+# source is another GitHub repo), opens a PR when its upstream repo publishes a newer release.
 # A PR rather than a push, so upstream changes are reviewed before they reach claude.ai.
 on:
   schedule:
@@ -18,9 +19,12 @@ jobs:
       plugins: ${{ steps.list.outputs.plugins }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: List vendored plugins
+      - name: List vendored and referenced plugins
         id: list
-        run: echo "plugins=$(ls plugins/*/.upstream.json | cut -d/ -f2 | jq -Rcs 'split("\n")[:-1]')" | tee -a "$GITHUB_OUTPUT"
+        run: |
+          vendored="$(ls plugins/*/.upstream.json | cut -d/ -f2 | jq -Rcs 'split("\n")[:-1]')"
+          referenced="$(jq -c '[.plugins[] | select(.source | type == "object") | .name]' .claude-plugin/marketplace.json)"
+          echo "plugins=$(jq -cn --argjson v "$vendored" --argjson r "$referenced" '$v + $r')" | tee -a "$GITHUB_OUTPUT"
 
   sync:
     needs: list
@@ -62,11 +66,12 @@ jobs:
           TAG: ${{ steps.sync.outputs.tag }}
           BRANCH: ${{ steps.sync.outputs.branch }}
         run: |
-          upstream="$(jq -r .repo "plugins/$PLUGIN/.upstream.json")"
+          upstream="$(jq -r .repo "plugins/$PLUGIN/.upstream.json" 2>/dev/null ||
+            jq -r --arg n "$PLUGIN" '.plugins[] | select(.name == $n) | .source.repo' .claude-plugin/marketplace.json)"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "$BRANCH"
-          git add "plugins/$PLUGIN" README.md .claude-plugin/marketplace.json
+          git add plugins README.md .claude-plugin/marketplace.json
           git commit -m "chore: update $PLUGIN to $TAG"
           git push origin "$BRANCH"
           gh pr create --title "chore: update $PLUGIN to $TAG" --body "Release notes: https://github.com/$upstream/releases/tag/$TAG
