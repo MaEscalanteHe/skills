@@ -52,14 +52,15 @@ MCP plugins such as `playwright` are only available through the Claude Code mark
 
 ## References
 
-Some plugins are adaptations of existing skills, tailored to my own use case, or unmodified copies kept here so they sync to claude.ai:
+Some plugins are adaptations of existing skills, tailored to my own use case, built on official documentation, or unmodified copies kept here so they sync to claude.ai:
 
 | Plugin                    | Based on                                                                                                                                                             |
 | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **terraform-conventions** | [hashicorp/agent-skills](https://github.com/hashicorp/agent-skills)                                                                                                  |
+| **terraform-conventions** | [hashicorp/agent-skills](https://github.com/hashicorp/agent-skills), [HashiCorp Terraform Style Guide](https://developer.hashicorp.com/terraform/language/style) |
 | **agents-md-auditor**     | [anthropics/claude-plugins-official: claude-md-improver](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/claude-md-management/skills/claude-md-improver/SKILL.md) |
 | **humanizer**             | [blader/humanizer](https://github.com/blader/humanizer) (unmodified copy)                                                                                            |
 | **ponytail**              | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (unmodified copy)                                                                              |
+| **prompt-engineer**       | [Anthropic: Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) |
 
 ## Development
 

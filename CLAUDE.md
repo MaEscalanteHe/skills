@@ -10,7 +10,7 @@ Claude Code plugin marketplace. Published plugins live in `plugins/<name>/`, ret
 
 1. Create `plugins/<name>/.claude-plugin/plugin.json` with `name` set to `<name>`, plus `description` and `author`. The marketplace entry name and the manifest name must match for installs to resolve.
 2. Put skills in `plugins/<name>/skills/<skill>/SKILL.md`, with longer material in a `references/` folder beside it. Give each `SKILL.md` frontmatter `license: MIT`, and keep to the fields other agents accept: `name`, `description`, `license`, `compatibility`, `metadata` and `allowed-tools`.
-3. If the plugin adapts another project, add a row to the README References table (maintained by hand).
+3. If the plugin adapts another project or is built on official documentation, add a row to the README References table (maintained by hand).
 4. Run `scripts/build-marketplace.sh`, then `claude plugin validate .`.
 
 ## Vendored plugins
