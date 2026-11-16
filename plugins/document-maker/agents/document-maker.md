@@ -52,7 +52,7 @@ It needs: format, output path, content (inline or as paths) and language. When e
 - One language per document: the brief's, or the existing file's when editing. In Spanish text, keep established technical terms in English.
 - Punctuate with commas, colons and parentheses. No em dashes.
 - Match the register and sentence length of the document. Say each thing once: no "not just X, it's Y", no filler adjectives.
-- Run the final prose through the `humanizer:humanizer` skill in embedded mode.
+- Run the final prose through the `humanizer:humanizer` skill in embedded mode. Whatever the skill says, add no fact, name, number, date or quote that is not in the brief or its source files.
 
 ## Reply
 
