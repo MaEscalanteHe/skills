@@ -60,6 +60,10 @@ jobs:
           npm install --global @anthropic-ai/claude-code@2.1.306
           claude plugin validate .
 
+      - name: Format
+        if: steps.sync.outputs.tag
+        run: npx --yes prettier@3.10.1 --write .
+
       - name: Open a pull request
         if: steps.sync.outputs.tag
         env:
