@@ -2,10 +2,9 @@
 set -euo pipefail
 
 # Regenerates the plugin list in .claude-plugin/marketplace.json and the
-# Skills/MCPs tables in README.md from plugins/*/ and vendored/*/
+# Skills/Agents/MCPs tables in README.md from plugins/*/ and vendored/*/
 # .claude-plugin/plugin.json, so deprecated/ is left out, plus the entries in
-# referenced/*.json, whose source is another GitHub repo. Plugins that ship a
-# .mcp.json go in the MCPs table. Requires jq.
+# referenced/*.json, whose source is another GitHub repo. Requires jq.
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 MARKETPLACE="$REPO/.claude-plugin/marketplace.json"
@@ -29,17 +28,21 @@ jq --argjson plugins "$plugins" \
 mv "$MARKETPLACE.tmp" "$MARKETPLACE"
 echo "wrote $(jq '.plugins | length' "$MARKETPLACE") plugins to $MARKETPLACE"
 
-# Prints a markdown table of the plugins with (mcp=true) or without a .mcp.json.
+# Prints a markdown table of the plugins that ship skills/, agents/ or a
+# .mcp.json (kind = skill, agent or mcp). Referenced plugins count as skills.
 table() {
-  local header="$1" mcp="$2"
+  local header="$1" kind="$2"
   printf '| %s | Description |\n| --- | --- |\n' "$header"
   jq -r '.plugins[] | [.name, .description, (.source |
       if type == "string" then ltrimstr("./") + "/"
       elif .source == "github" then "https://github.com/\(.repo)"
       else error("unsupported source: \(.source)") end)] | @tsv' "$MARKETPLACE" |
     while IFS=$'\t' read -r name description link; do
-      if [[ -e "$link/.mcp.json" ]]; then has_mcp=true; else has_mcp=false; fi
-      [[ "$has_mcp" == "$mcp" ]] || continue
+      case "$kind" in
+        skill) [[ -d "$link/skills" || "$link" == https://* ]] ;;
+        agent) [[ -d "$link/agents" ]] ;;
+        mcp) [[ -e "$link/.mcp.json" ]] ;;
+      esac || continue
       echo "| [**$name**]($link) | $description |"
     done
 }
@@ -57,6 +60,7 @@ replace_block() {
   mv "$README.tmp" "$README"
 }
 
-replace_block skills "$(table Skill false)"
-replace_block mcps "$(table MCP true)"
-echo "updated Skills and MCPs tables in $README"
+replace_block skills "$(table Skill skill)"
+replace_block agents "$(table Agent agent)"
+replace_block mcps "$(table MCP mcp)"
+echo "updated Skills, Agents and MCPs tables in $README"

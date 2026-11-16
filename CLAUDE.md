@@ -4,7 +4,7 @@ Claude Code plugin marketplace. Plugins written or adapted here live in `plugins
 
 ## Generated files
 
-`.claude-plugin/marketplace.json` and the README tables between the `<!-- skills:start/end -->` and `<!-- mcps:start/end -->` markers are generated from the `.claude-plugin/plugin.json` of each plugin in `plugins/` and `vendored/`, plus the entries in `referenced/`. Never edit them by hand. Change a description or name in the plugin's `plugin.json`, then run `scripts/build-marketplace.sh`. Plugins that ship a `.mcp.json` land in the MCPs table.
+`.claude-plugin/marketplace.json` and the README tables between the `<!-- skills:start/end -->`, `<!-- agents:start/end -->` and `<!-- mcps:start/end -->` markers are generated from the `.claude-plugin/plugin.json` of each plugin in `plugins/` and `vendored/`, plus the entries in `referenced/`. Never edit them by hand. Change a description or name in the plugin's `plugin.json`, then run `scripts/build-marketplace.sh`. Each plugin lands in the Skills, Agents or MCPs table for each of `skills/`, `agents/` and `.mcp.json` it ships. Referenced plugins land in the Skills table.
 
 ## Adding a plugin
 
