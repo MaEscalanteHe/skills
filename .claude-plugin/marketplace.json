@@ -17,6 +17,11 @@
       "source": "./plugins/dockerfile-builder"
     },
     {
+      "name": "document-maker",
+      "description": "Subagent that creates and edits HTML, Word, PowerPoint and Excel files in a separate context, styled with the user's design system or keeping an existing file's design",
+      "source": "./plugins/document-maker"
+    },
+    {
       "name": "humanizer",
       "description": "Rewrite AI-sounding text so it reads like the writer without changing what it says",
       "source": "./vendored/humanizer"

@@ -1,0 +1,8 @@
+{
+  "name": "document-maker",
+  "description": "Subagent that creates and edits HTML, Word, PowerPoint and Excel files in a separate context, styled with the user's design system or keeping an existing file's design",
+  "author": {
+    "name": "Manuel Escalante",
+    "email": "maescalantehe@gmail.com"
+  }
+}
