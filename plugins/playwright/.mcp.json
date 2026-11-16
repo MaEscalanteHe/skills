@@ -2,7 +2,11 @@
   "mcpServers": {
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/mcp@latest", "--executable-path", "/usr/sbin/chromium"]
+      "args": [
+        "@playwright/mcp@latest",
+        "--executable-path",
+        "/usr/sbin/chromium"
+      ]
     }
   }
 }

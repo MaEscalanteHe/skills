@@ -10,20 +10,20 @@
 // regex is unanchored and case-insensitive — "explore|general" matches either,
 // "^general$" is exact. Unset means inject into every subagent, as before.
 
-const { getPonytailInstructions } = require('./ponytail-instructions');
-const { readMode, writeHookOutput } = require('./ponytail-runtime');
-const vm = require('vm');
+const { getPonytailInstructions } = require("./ponytail-instructions");
+const { readMode, writeHookOutput } = require("./ponytail-runtime");
+const vm = require("vm");
 
 const mode = readMode();
 
 // Absent flag or off → ponytail isn't active; inject nothing.
-if (!mode || mode === 'off') {
+if (!mode || mode === "off") {
   process.exit(0);
 }
 
 function inject() {
   try {
-    writeHookOutput('SubagentStart', mode, getPonytailInstructions(mode));
+    writeHookOutput("SubagentStart", mode, getPonytailInstructions(mode));
   } catch (e) {
     // Silent fail — a stdout error at hook exit must not surface as a hook failure.
   }
@@ -33,7 +33,7 @@ function inject() {
 let matcherRe = null;
 try {
   if (process.env.PONYTAIL_SUBAGENT_MATCHER) {
-    matcherRe = new RegExp(process.env.PONYTAIL_SUBAGENT_MATCHER, 'i');
+    matcherRe = new RegExp(process.env.PONYTAIL_SUBAGENT_MATCHER, "i");
   }
 } catch (e) {
   matcherRe = null;
@@ -51,17 +51,19 @@ if (!matcherRe) {
 // Matcher set → read agent_type from stdin and skip only on a definite
 // mismatch. Missing/unparseable agent_type, a stdin error, or the timeout all
 // fail open (inject), so scoping never silently drops the persona.
-let input = '';
+let input = "";
 let done = false;
 
 function finish() {
   if (done) return;
   done = true;
 
-  let agentType = '';
+  let agentType = "";
   try {
     // Strip UTF-8 BOM some shells prepend when piping (breaks JSON.parse)
-    agentType = String(JSON.parse(input.replace(/^\uFEFF/, '')).agent_type || '').trim();
+    agentType = String(
+      JSON.parse(input.replace(/^\uFEFF/, "")).agent_type || "",
+    ).trim();
   } catch (e) {
     // Unparseable payload — fall through and inject to be safe.
   }
@@ -71,7 +73,11 @@ function finish() {
   let matches = true;
   try {
     if (agentType) {
-      matches = vm.runInNewContext('re.test(s)', { re: matcherRe, s: agentType }, { timeout: 100 });
+      matches = vm.runInNewContext(
+        "re.test(s)",
+        { re: matcherRe, s: agentType },
+        { timeout: 100 },
+      );
     }
   } catch (e) {
     matches = true;
@@ -82,13 +88,24 @@ function finish() {
   inject();
 }
 
-process.stdin.on('data', chunk => { input += chunk; });
+process.stdin.on("data", (chunk) => {
+  input += chunk;
+});
 // Exit on 'end' (not just finish()) so the ref'd fallback timer below can't
 // add its full 1000ms to the normal fast path.
-process.stdin.on('end', () => { finish(); process.exit(0); });
+process.stdin.on("end", () => {
+  finish();
+  process.exit(0);
+});
 // Never block the session (#443): recover on stdin error or a short fallback.
 // The fallback stays ref'd: on Windows a stuck ref'd stdin keeps the loop
 // alive and an unref'd timer is never scheduled, so the hook hung to the
 // external watchdog instead of exiting at 1s (#790).
-process.stdin.on('error', () => { finish(); process.exit(0); });
-setTimeout(() => { finish(); process.exit(0); }, 1000);
+process.stdin.on("error", () => {
+  finish();
+  process.exit(0);
+});
+setTimeout(() => {
+  finish();
+  process.exit(0);
+}, 1000);

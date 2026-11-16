@@ -46,8 +46,8 @@ Claude has built-in values (honesty, safety, helpfulness). Work with them:
 
 ## Anti-patterns
 
-| Anti-pattern                                   | Problem                                                     | Fix                                            |
-| ---------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------- |
-| "CRITICAL: You MUST use this tool when…"       | Recent models follow the system prompt closely and overtrigger | "Use this tool when…"                       |
-| Thoroughness pushes tuned for older models     | "If in doubt, use [tool]" now causes overuse                | Targeted guidance: "Use [tool] when it helps…" |
-| Multiple tasks in a single prompt              | Diluted quality on each sub-task                            | One prompt per task, or explicit decomposition |
+| Anti-pattern                               | Problem                                                        | Fix                                            |
+| ------------------------------------------ | -------------------------------------------------------------- | ---------------------------------------------- |
+| "CRITICAL: You MUST use this tool when…"   | Recent models follow the system prompt closely and overtrigger | "Use this tool when…"                          |
+| Thoroughness pushes tuned for older models | "If in doubt, use [tool]" now causes overuse                   | Targeted guidance: "Use [tool] when it helps…" |
+| Multiple tasks in a single prompt          | Diluted quality on each sub-task                               | One prompt per task, or explicit decomposition |

@@ -6,10 +6,7 @@
     "name": "Dietrich Gebert",
     "url": "https://github.com/DietrichGebert"
   },
-  "hooks": [
-    "./hooks/claude-codex-hooks.json",
-    "./hooks/claude-band.json"
-  ],
+  "hooks": ["./hooks/claude-codex-hooks.json", "./hooks/claude-band.json"],
   "types": "./hooks/band/types.d.ts",
   "userConfig": {
     "ledger": {

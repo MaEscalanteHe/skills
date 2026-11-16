@@ -1,98 +1,119 @@
 // The task board: one self-contained HTML page built from the band's CSV ledgers.
 // No server and no network: inline CSS, inline SVG and a few lines of script.
 
-import { LOGO_PATHS, LOGO_VIEWBOX } from './logo'
+import { LOGO_PATHS, LOGO_VIEWBOX } from "./logo";
 
 export const duration = (minutes: number) =>
-  minutes < 60 ? `${minutes}m` : `${Math.floor(minutes / 60)}h ${minutes % 60}m`
+  minutes < 60
+    ? `${minutes}m`
+    : `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
 
 // Agent time reads better with seconds while it is short.
 export const elapsed = (ms: number) => {
-  const s = Math.round(ms / 1000)
-  if (s < 60) return `${s}s`
-  if (s < 3600) return `${Math.floor(s / 60)}m ${s % 60}s`
-  return duration(Math.round(s / 60))
-}
+  const s = Math.round(ms / 1000);
+  if (s < 60) return `${s}s`;
+  if (s < 3600) return `${Math.floor(s / 60)}m ${s % 60}s`;
+  return duration(Math.round(s / 60));
+};
 
 export const fmtTokens = (n: number) =>
-  n < 1000 ? `${n}` : n < 1e6 ? `${+(n / 1e3).toFixed(1)}k` : `${+(n / 1e6).toFixed(1)}M`
+  n < 1000
+    ? `${n}`
+    : n < 1e6
+      ? `${+(n / 1e3).toFixed(1)}k`
+      : `${+(n / 1e6).toFixed(1)}M`;
 
 export type Task = {
-  started: string
-  project: string
-  name: string
-  cost: number
-  turns: number
-  agentMinutes: number
-  tokens: number
-  reuse: number | null
-  tests: string
-  level: string
-  model: string
-}
+  started: string;
+  project: string;
+  name: string;
+  cost: number;
+  turns: number;
+  agentMinutes: number;
+  tokens: number;
+  reuse: number | null;
+  tests: string;
+  level: string;
+  model: string;
+};
 
 // RFC 4180 rows: quoted fields may hold commas, doubled quotes and line breaks.
 export function parseCsv(text: string): string[][] {
-  const rows: string[][] = []
-  let row: string[] = []
-  let field = ''
-  let quoted = false
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = "";
+  let quoted = false;
   for (let i = 0; i < text.length; i++) {
-    const c = text[i]
+    const c = text[i];
     if (quoted) {
       if (c === '"' && text[i + 1] === '"') {
-        field += '"'
-        i++
-      } else if (c === '"') quoted = false
-      else field += c
-    } else if (c === '"') quoted = true
-    else if (c === ',') {
-      row.push(field)
-      field = ''
-    } else if (c === '\n' || c === '\r') {
-      if (c === '\r' && text[i + 1] === '\n') i++
-      row.push(field)
-      if (row.some(f => f !== '')) rows.push(row)
-      row = []
-      field = ''
-    } else field += c
+        field += '"';
+        i++;
+      } else if (c === '"') quoted = false;
+      else field += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ",") {
+      row.push(field);
+      field = "";
+    } else if (c === "\n" || c === "\r") {
+      if (c === "\r" && text[i + 1] === "\n") i++;
+      row.push(field);
+      if (row.some((f) => f !== "")) rows.push(row);
+      row = [];
+      field = "";
+    } else field += c;
   }
-  row.push(field)
-  if (row.some(f => f !== '')) rows.push(row)
-  return rows
+  row.push(field);
+  if (row.some((f) => f !== "")) rows.push(row);
+  return rows;
 }
 
 export function tasksFrom(text: string): Task[] {
-  const [head, ...rows] = parseCsv(text)
-  if (!head?.includes('key')) return []
-  const at = (row: string[], col: string) => row[head.indexOf(col)] ?? ''
-  const num = (row: string[], col: string) => Number(at(row, col)) || 0
-  return rows.map(row => ({
-    started: at(row, 'started'),
-    project: at(row, 'project'),
-    name: at(row, 'name'),
-    cost: num(row, 'cost_usd'),
-    turns: num(row, 'turns'),
-    agentMinutes: num(row, 'agent_minutes'),
-    tokens: num(row, 'tokens_total'),
-    reuse: at(row, 'reuse_pct') === '' ? null : num(row, 'reuse_pct'),
-    tests: at(row, 'tests'),
-    level: at(row, 'level'),
-    model: at(row, 'model'),
-  }))
+  const [head, ...rows] = parseCsv(text);
+  if (!head?.includes("key")) return [];
+  const at = (row: string[], col: string) => row[head.indexOf(col)] ?? "";
+  const num = (row: string[], col: string) => Number(at(row, col)) || 0;
+  return rows.map((row) => ({
+    started: at(row, "started"),
+    project: at(row, "project"),
+    name: at(row, "name"),
+    cost: num(row, "cost_usd"),
+    turns: num(row, "turns"),
+    agentMinutes: num(row, "agent_minutes"),
+    tokens: num(row, "tokens_total"),
+    reuse: at(row, "reuse_pct") === "" ? null : num(row, "reuse_pct"),
+    tests: at(row, "tests"),
+    level: at(row, "level"),
+    model: at(row, "model"),
+  }));
 }
 
-const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+const esc = (s: string) =>
+  s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 const day = (ms: number) => {
-  const d = new Date(ms)
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-}
+  const d = new Date(ms);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
 
 // Project colours, in sidebar order; the share card carries a gradient for each.
-const PALETTE = ['#5fe08a', '#7c8cff', '#2fd4c0', '#ff8a3d', '#ff6fb5', '#ffd166', '#4cc3ff', '#b26bff']
+const PALETTE = [
+  "#5fe08a",
+  "#7c8cff",
+  "#2fd4c0",
+  "#ff8a3d",
+  "#ff6fb5",
+  "#ffd166",
+  "#4cc3ff",
+  "#b26bff",
+];
 
-const LIGHT = 'color-scheme:light;--bg:#f5f5f3;--panel:#fff;--card:#fff;--line:#ebeae6;--line2:#dedcd6;--text:#1d1c1a;--muted:#77756f;--faint:#a9a7a0;--track:#f2f1ed;--segOn:#fff;--tip:#1d1c1a;--tipText:#fff;--ok:#2f7d3b;--okbg:#e8f5e9;--bad:#b4401b;--badbg:#fcebe4;--warn:#946200;--warnbg:#fbf2d7;--nonebg:#f2f1ed;--empty:#eeede9;--tint:.12;--glow:.45;--shadow:0 1px 2px rgba(25,25,15,.05)'
-const MONO_CSS = '"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace'
+const LIGHT =
+  "color-scheme:light;--bg:#f5f5f3;--panel:#fff;--card:#fff;--line:#ebeae6;--line2:#dedcd6;--text:#1d1c1a;--muted:#77756f;--faint:#a9a7a0;--track:#f2f1ed;--segOn:#fff;--tip:#1d1c1a;--tipText:#fff;--ok:#2f7d3b;--okbg:#e8f5e9;--bad:#b4401b;--badbg:#fcebe4;--warn:#946200;--warnbg:#fbf2d7;--nonebg:#f2f1ed;--empty:#eeede9;--tint:.12;--glow:.45;--shadow:0 1px 2px rgba(25,25,15,.05)";
+const MONO_CSS = '"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace';
 
 // Dark is the default; light (chosen, or the system's when "system" is chosen) keeps the same layout.
 const CSS = `:root{color-scheme:dark;--bg:#060606;--panel:#0c0c0c;--card:linear-gradient(180deg,#0f0f0f,#090909);--line:#1c1c1b;--line2:#262624;--text:#f3f2ee;--muted:#8d8b84;--faint:#5e5c55;--track:#141413;--segOn:#1f1f1d;--tip:#050505;--tipText:#f3f2ee;--ok:#5fe08a;--okbg:#122016;--bad:#ff6b5b;--badbg:#2a1210;--warn:#f1c96b;--warnbg:#2a2412;--nonebg:#161615;--empty:#151514;--tint:.2;--glow:1;--shadow:inset 0 1px 0 rgba(255,255,255,.035),0 20px 50px rgba(0,0,0,.35)}
@@ -178,7 +199,7 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
 @media (max-width:860px){.app{grid-template-columns:minmax(0,1fr)}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:0;border-bottom:1px solid var(--line)}
 .side-label,.foot-text,.foot-sep{display:none}.side-foot{margin:0 0 0 auto;padding:0;border:0}.brand{padding:2px 10px}#projects{display:flex;gap:4px;flex-wrap:wrap}.nav-item{width:auto}
 main{padding:16px}.search{width:160px}.big{font-size:32px}}
-@media (max-width:520px){.kpis{grid-template-columns:minmax(0,1fr)}.top .actions{width:100%;justify-content:space-between}.list-head{flex-wrap:wrap}.search{width:100%}}`
+@media (max-width:520px){.kpis{grid-template-columns:minmax(0,1fr)}.top .actions{width:100%;justify-content:space-between}.list-head{flex-wrap:wrap}.search{width:100%}}`;
 
 // The page draws itself from the JSON block: project picker, period, charts and table need no reload.
 // Names only ever reach the page as text (textContent), never as HTML.
@@ -501,49 +522,78 @@ const APP = `(function () {
   })
 
   render()
-})()`
+})()`;
 
 // The share card stays dark in both themes: an image for X or LinkedIn, not part of the page's look.
 // The page fills its numbers and stream; the logo symbol joins it when the card is saved.
-const SANS = "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-const MONO = "'JetBrains Mono', ui-monospace, Menlo, monospace"
+const SANS =
+  "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+const MONO = "'JetBrains Mono', ui-monospace, Menlo, monospace";
 const cardStat = (y: number, label: string, id: string) =>
-  `<text x="760" y="${y}" font-size="20" fill="#8d8b84">${label}</text><text id="${id}" x="1128" y="${y}" text-anchor="end" font-family="${MONO}" font-size="30" fill="#f3f2ee"></text>`
+  `<text x="760" y="${y}" font-size="20" fill="#8d8b84">${label}</text><text id="${id}" x="1128" y="${y}" text-anchor="end" font-family="${MONO}" font-size="30" fill="#f3f2ee"></text>`;
 const CARD = `<svg id="card" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" font-family="${SANS}">
-<defs>${PALETTE.map((c, i) => `<linearGradient id="cf${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity=".95"/><stop offset="1" stop-color="${c}" stop-opacity=".55"/></linearGradient>`).join('')}<filter id="cglow" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="12"/></filter><radialGradient id="chalo" cx=".62" cy=".8" r=".6"><stop offset="0" stop-color="#5fe08a" stop-opacity=".16"/><stop offset="1" stop-color="#5fe08a" stop-opacity="0"/></radialGradient></defs>
+<defs>${PALETTE.map((c, i) => `<linearGradient id="cf${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity=".95"/><stop offset="1" stop-color="${c}" stop-opacity=".55"/></linearGradient>`).join("")}<filter id="cglow" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="12"/></filter><radialGradient id="chalo" cx=".62" cy=".8" r=".6"><stop offset="0" stop-color="#5fe08a" stop-opacity=".16"/><stop offset="1" stop-color="#5fe08a" stop-opacity="0"/></radialGradient></defs>
 <rect width="1200" height="630" fill="#070707"/><rect width="1200" height="630" fill="url(#chalo)"/>
 <g id="c-stream"></g><rect y="600" width="1200" height="30" fill="#070707"/>
 <use href="#pt-logo" x="72" y="62" width="48" height="55"/>
 <text x="134" y="98" font-family="${MONO}" font-size="28" font-weight="600" fill="#f3f2ee">ponytail</text>
 <text id="c-scope" x="1128" y="98" text-anchor="end" font-size="20" fill="#8d8b84"></text>
 <text x="72" y="196" font-size="22" fill="#8d8b84">Agent time</text><text id="c-time" x="66" y="292" font-family="${MONO}" font-size="104" font-weight="600" letter-spacing="-5" fill="#f3f2ee"></text>
-${cardStat(172, 'Cost', 'c-cost')}${cardStat(228, 'Tokens', 'c-tokens')}${cardStat(284, 'Sessions', 'c-sessions')}
-<text x="72" y="621" font-family="${MONO}" font-size="15" fill="#5e5c55">measured in Claude Code</text><text x="1128" y="621" text-anchor="end" font-family="${MONO}" font-size="15" fill="#5fe08a">ponytail.dev</text></svg>`
+${cardStat(172, "Cost", "c-cost")}${cardStat(228, "Tokens", "c-tokens")}${cardStat(284, "Sessions", "c-sessions")}
+<text x="72" y="621" font-family="${MONO}" font-size="15" fill="#5e5c55">measured in Claude Code</text><text x="1128" y="621" text-anchor="end" font-family="${MONO}" font-size="15" fill="#5fe08a">ponytail.dev</text></svg>`;
 
 // JSON inside a script block: "<" is escaped so no name can close the block.
-const json = (value: unknown) => JSON.stringify(value).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029')
+const json = (value: unknown) =>
+  JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
 
 // Dark, light, system: CSS shows the icon of the current choice.
-const THEME_BUTTON = '<button type="button" class="theme" id="theme" data-choice="dark" aria-label="Theme: dark" title="Theme: dark"><svg class="i-system" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="i-light" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="i-dark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>'
+const THEME_BUTTON =
+  '<button type="button" class="theme" id="theme" data-choice="dark" aria-label="Theme: dark" title="Theme: dark"><svg class="i-system" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="i-light" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="i-dark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>';
 
 // The tab icon: the same face, centred on a square canvas.
-const FAVICON = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-78 0 1241 1241"><g fill="#1d1c1a">${LOGO_PATHS}</g></svg>`)}`
+const FAVICON = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-78 0 1241 1241"><g fill="#1d1c1a">${LOGO_PATHS}</g></svg>`)}`;
 
-const SEARCH_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'
+const SEARCH_ICON =
+  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
 
 export function boardHtml(tasks: Task[], now: number): string {
   const seg = (attr: string, items: [string, string][], on: string) =>
-    items.map(([value, label]) => `<button type="button" data-${attr}="${value}"${value === on ? ' class="on"' : ''}>${label}</button>`).join('')
+    items
+      .map(
+        ([value, label]) =>
+          `<button type="button" data-${attr}="${value}"${value === on ? ' class="on"' : ""}>${label}</button>`,
+      )
+      .join("");
   return `<!doctype html><html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ponytail board</title><link rel="icon" href="${FAVICON}"><style>${CSS}</style></head>
 <body><svg class="sprite" aria-hidden="true" focusable="false"><symbol id="pt-logo" viewBox="${LOGO_VIEWBOX}"><g fill="#1d1c1a">${LOGO_PATHS}</g></symbol></svg>
 <div class="app">
 <aside class="side"><div class="brand"><span class="logo"><svg viewBox="${LOGO_VIEWBOX}" aria-hidden="true"><use href="#pt-logo"/></svg></span>ponytail</div><div class="side-label">Projects</div><nav id="projects"></nav><div class="side-foot"><div class="foot-text">Local board<br>${esc(day(now))}</div><span class="foot-sep"></span>${THEME_BUTTON}</div></aside>
 <main>
 <div class="top"><div><div class="crumb">Board / <b id="crumb"></b></div><h1 id="title"></h1><p id="subtitle"></p></div>
-<div class="actions"><div class="seg" role="group" aria-label="Period">${seg('period', [['7', '7d'], ['30', '30d'], ['90', '90d'], ['0', 'All']], '30')}</div><button type="button" class="btn" id="share">Share card</button></div></div>
+<div class="actions"><div class="seg" role="group" aria-label="Period">${seg(
+    "period",
+    [
+      ["7", "7d"],
+      ["30", "30d"],
+      ["90", "90d"],
+      ["0", "All"],
+    ],
+    "30",
+  )}</div><button type="button" class="btn" id="share">Share card</button></div></div>
 <section class="kpis" id="kpis"></section>
 <section class="card chart-card"><div class="chart-head"><div><div class="label" id="chart-sub"></div><div class="big num" id="chart-total"></div></div>
-<div class="seg" role="group" aria-label="Metric">${seg('metric', [['time', 'Agent time'], ['cost', 'Cost'], ['tokens', 'Tokens']], 'time')}</div></div>
+<div class="seg" role="group" aria-label="Metric">${seg(
+    "metric",
+    [
+      ["time", "Agent time"],
+      ["cost", "Cost"],
+      ["tokens", "Tokens"],
+    ],
+    "time",
+  )}</div></div>
 <div class="chart-wrap"><svg id="stream" role="img" aria-label="Per project and day"></svg><div class="tip" id="tip" hidden></div></div><div class="legend" id="legend"></div></section>
 <div class="grid2">
 <section class="card list"><div class="list-head"><h3>Sessions<span class="n" id="count"></span></h3><label class="search">${SEARCH_ICON}<input id="q" type="search" placeholder="Search sessions" aria-label="Search sessions"></label></div>
@@ -556,5 +606,5 @@ export function boardHtml(tasks: Task[], now: number): string {
 </main></div>
 <dialog id="share-dialog"><div class="dlg-head"><b>Share card</b><div class="dlg-actions"><button type="button" class="btn" id="save-png">Save PNG</button><button type="button" class="btn" id="save-svg">Save SVG</button><button type="button" class="btn" id="share-close">Close</button></div></div><div class="dlg-body">${CARD}</div></dialog>
 <script type="application/json" id="board-data">${json({ now, tasks })}</script>
-<script>${APP}</script></body></html>`
+<script>${APP}</script></body></html>`;
 }
