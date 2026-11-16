@@ -5,16 +5,18 @@ Personal Claude Code plugin marketplace and agent skills for infrastructure and 
 ## Skills
 
 <!-- skills:start -->
-| Skill | Description |
-| --- | --- |
-| [**agents-md-auditor**](plugins/agents-md-auditor/) | Audit and improve CLAUDE.md files with quality scoring, targeted updates, and modern Claude Code feature recommendations |
-| [**dockerfile-builder**](plugins/dockerfile-builder/) | Generate optimized, secure multi-stage Dockerfiles with modern BuildKit features, language-specific patterns, and container security best practices |
-| [**humanizer**](vendored/humanizer/) | Rewrite AI-sounding text so it reads like the writer without changing what it says |
-| [**mattpocock-skills**](https://github.com/mattpocock/skills) | Matt Pocock's agent skills for real engineering: grilling, spec/ticket flows, TDD, code review, domain modelling and more |
-| [**ponytail**](vendored/ponytail/) | Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions. |
-| [**prompt-engineer**](plugins/prompt-engineer/) | Create, improve and optimize prompts and system prompts for Claude, with a diagnosis of what works and the reasoning behind each change |
-| [**split-bill**](plugins/split-bill/) | Split a restaurant bill between several people from a photo of the receipt, matching every line to who ordered it and reconciling against the printed total |
-| [**terraform-conventions**](plugins/terraform-conventions/) | Write and review Terraform HCL following HashiCorp's official style conventions, with file organization, naming, security, and module best practices |
+
+| Skill                                                         | Description                                                                                                                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [**agents-md-auditor**](plugins/agents-md-auditor/)           | Audit and improve CLAUDE.md files with quality scoring, targeted updates, and modern Claude Code feature recommendations                                    |
+| [**dockerfile-builder**](plugins/dockerfile-builder/)         | Generate optimized, secure multi-stage Dockerfiles with modern BuildKit features, language-specific patterns, and container security best practices         |
+| [**humanizer**](vendored/humanizer/)                          | Rewrite AI-sounding text so it reads like the writer without changing what it says                                                                          |
+| [**mattpocock-skills**](https://github.com/mattpocock/skills) | Matt Pocock's agent skills for real engineering: grilling, spec/ticket flows, TDD, code review, domain modelling and more                                   |
+| [**ponytail**](vendored/ponytail/)                            | Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.                         |
+| [**prompt-engineer**](plugins/prompt-engineer/)               | Create, improve and optimize prompts and system prompts for Claude, with a diagnosis of what works and the reasoning behind each change                     |
+| [**split-bill**](plugins/split-bill/)                         | Split a restaurant bill between several people from a photo of the receipt, matching every line to who ordered it and reconciling against the printed total |
+| [**terraform-conventions**](plugins/terraform-conventions/)   | Write and review Terraform HCL following HashiCorp's official style conventions, with file organization, naming, security, and module best practices        |
+
 <!-- skills:end -->
 
 ## Agents
@@ -22,9 +24,11 @@ Personal Claude Code plugin marketplace and agent skills for infrastructure and 
 Plugins that bundle a subagent, which Claude delegates matching tasks to in its own context.
 
 <!-- agents:start -->
-| Agent | Description |
-| --- | --- |
+
+| Agent                                         | Description                                                                                                                                                             |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [**document-maker**](plugins/document-maker/) | Subagent that creates and edits HTML, Word, PowerPoint and Excel files in a separate context, styled with the user's design system or keeping an existing file's design |
+
 <!-- agents:end -->
 
 ## MCPs
@@ -32,9 +36,11 @@ Plugins that bundle a subagent, which Claude delegates matching tasks to in its 
 Plugins that bundle an MCP server. Installing one auto-configures the server in Claude Code (you'll be prompted to approve it on first use).
 
 <!-- mcps:start -->
-| MCP | Description |
-| --- | --- |
+
+| MCP                                   | Description                                                                                                                                                    |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [**playwright**](plugins/playwright/) | Browser automation and end-to-end testing via the Playwright MCP server: navigate, click, fill forms, take snapshots and screenshots, and drive a real browser |
+
 <!-- mcps:end -->
 
 ## Installation
@@ -65,14 +71,14 @@ MCP plugins such as `playwright` are only available through the Claude Code mark
 
 Some plugins are adaptations of existing skills, tailored to my own use case, built on official documentation, unmodified copies kept here so they sync to claude.ai, or references to another repo:
 
-| Plugin                    | Based on                                                                                                                                                             |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **terraform-conventions** | [hashicorp/agent-skills](https://github.com/hashicorp/agent-skills), [HashiCorp Terraform Style Guide](https://developer.hashicorp.com/terraform/language/style) |
+| Plugin                    | Based on                                                                                                                                                                                  |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **terraform-conventions** | [hashicorp/agent-skills](https://github.com/hashicorp/agent-skills), [HashiCorp Terraform Style Guide](https://developer.hashicorp.com/terraform/language/style)                          |
 | **agents-md-auditor**     | [anthropics/claude-plugins-official: claude-md-improver](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/claude-md-management/skills/claude-md-improver/SKILL.md) |
-| **humanizer**             | [blader/humanizer](https://github.com/blader/humanizer) (unmodified copy)                                                                                            |
-| **mattpocock-skills**     | [mattpocock/skills](https://github.com/mattpocock/skills) (referenced)                                                                                               |
-| **ponytail**              | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (unmodified copy)                                                                              |
-| **prompt-engineer**       | [Anthropic: Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) |
+| **humanizer**             | [blader/humanizer](https://github.com/blader/humanizer) (unmodified copy)                                                                                                                 |
+| **mattpocock-skills**     | [mattpocock/skills](https://github.com/mattpocock/skills) (referenced)                                                                                                                    |
+| **ponytail**              | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (unmodified copy)                                                                                                   |
+| **prompt-engineer**       | [Anthropic: Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)                                           |
 
 ## Development
 

@@ -67,6 +67,7 @@ Use the exact tag string — they usually carry a `v` prefix (`v15.1.8`, `v13.5.
 ## Examples
 
 **React hooks**
+
 ```bash
 curl -s "https://context7.com/api/v2/libs/search?libraryName=react&query=hooks" | jq -r '.results[0].id'
 # → /websites/react_dev_reference
@@ -75,6 +76,7 @@ curl -s "https://context7.com/api/v2/context?libraryId=/websites/react_dev_refer
 ```
 
 **FastAPI dependency injection (authenticated)**
+
 ```bash
 curl -s -H "Authorization: Bearer $CONTEXT7_API_KEY" \
   "https://context7.com/api/v2/context?libraryId=/fastapi/fastapi&query=dependency+injection&type=txt"
